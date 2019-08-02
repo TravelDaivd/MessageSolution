@@ -12,10 +12,11 @@
     <artifactId>solution</artifactId>
     <version>1.0.0</version>
     <name>solution</name>
-    <description>messge solution</description>
+    <description>消息解决方案</description>
 
     <properties>
         <java.version>1.8</java.version>
+        <fastjson.version>1.2.54</fastjson.version>
     </properties>
 
     <dependencies>
@@ -28,6 +29,25 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+
+        <!--rabbitMq-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 

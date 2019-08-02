@@ -1,0 +1,11 @@
+spring:
+  rabbitmq:
+    host: 172.162.15.111
+    username: admin
+    password: admin
+    virtual-host: topicFile
+  datasource:
+    url: jdbc:mysql://172.162.15.113:3306/david?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: db_user
+    password: 2wsx3edcZSE
+    driver-class-name: com.mysql.jdbc.Driver

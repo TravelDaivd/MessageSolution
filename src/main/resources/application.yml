@@ -1,0 +1,7 @@
+server:
+  port: 9524
+spring:
+  application:
+    name: /message/solution
+  profiles:
+    active: dev
