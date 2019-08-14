@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Date;
 
-@Component
+//@Component
 public class SendMessage {
     public final static long SECOND = 1 * 1000;
 
@@ -24,7 +24,7 @@ public class SendMessage {
     @Autowired
     private SendMessageCallBack sendMessageCallBack;
 
-    @Scheduled(fixedRate = SECOND * 60 * 1, initialDelay = SECOND * 10)
+   // @Scheduled(fixedRate = SECOND * 60 * 1, initialDelay = SECOND * 10)
     public void syncMessage (){
         DeviceAlarm deviceAlarm = handleMessage();
         if(deviceAlarm.getOperType()==-1){
