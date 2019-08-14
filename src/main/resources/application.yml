@@ -1,5 +1,5 @@
 server:
-  port: 9524
+  port: 8524
 spring:
   application:
     name: /message/solution
