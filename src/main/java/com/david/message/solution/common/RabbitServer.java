@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,21 +31,41 @@ public class RabbitServer implements PushMessage, InitializingBean {
     }
 
     @Override
+    public void ordinarySendMessage(Object message, String queueName,int second) {
+        logger.info("ordinarySendMessage > "+ message);
+        MessagePostProcessor messagePostProcessor = setMessageExpirationTime(second);
+        rabbitTemplate.convertAndSend(queueName,message,messagePostProcessor);
+    }
+
+    @Override
     public void sendMessageAndCallback(Object message, String queueName,String IGenId) {
-        //这里设置的ID可以是业务数据ID也可以是随机UUID
         logger.info("sendMessageAndCallback > "+ message);
         CorrelationData correlationData = new CorrelationData(IGenId);
         rabbitTemplate.convertAndSend(queueName,message,correlationData);
     }
 
     @Override
+    public void sendMessageAndCallback(Object content, String queueName, String IGenId, int second) {
+        logger.info("sendMessageAndCallback > "+ content);
+        CorrelationData correlationData = new CorrelationData(IGenId);
+        MessagePostProcessor messagePostProcessor = setMessageExpirationTime(second);
+        rabbitTemplate.convertAndSend(queueName,content,messagePostProcessor,correlationData);
+    }
+
+    @Override
     public void sendMessageAndCallback(Object message, String exchangeName, String routingKey, String IGenId) {
         logger.info("sendMessageAndCallback > "+ message);
-        //这里设置的ID可以是业务数据ID也可以是随机UUID
         CorrelationData correlationData = new CorrelationData(IGenId);
         rabbitTemplate.convertAndSend(exchangeName,routingKey,message,correlationData);
     }
 
+    @Override
+    public void sendMessageAndCallback(Object content, String exchangeName, String routingKey, String IGenId, int second) {
+        logger.info("sendMessageAndCallback > "+ content);
+        CorrelationData correlationData = new CorrelationData(IGenId);
+        MessagePostProcessor messagePostProcessor = setMessageExpirationTime(second);
+        rabbitTemplate.convertAndSend(exchangeName,routingKey,content,messagePostProcessor,correlationData);
+    }
 
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String value) {
@@ -92,6 +114,19 @@ public class RabbitServer implements PushMessage, InitializingBean {
         this.rabbitCallback = rabbitCallback;
     }
 
-
+    /**
+     * 设置消息过期时间
+     * @param second
+     * @return
+     */
+    private  MessagePostProcessor setMessageExpirationTime(int second){
+        MessagePostProcessor messagePostProcessor = message -> {
+            MessageProperties messageProperties = message.getMessageProperties();
+            messageProperties.setContentEncoding("utf-8");
+            messageProperties.setExpiration(String.valueOf(second*1000));
+            return message;
+        };
+        return messagePostProcessor;
+    }
 
 }

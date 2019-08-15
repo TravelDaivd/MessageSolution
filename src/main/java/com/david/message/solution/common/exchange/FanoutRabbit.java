@@ -1,15 +1,13 @@
 package com.david.message.solution.common.exchange;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
+
+import java.util.Map;
 
 
 public class FanoutRabbit  implements RabbitMQExchange {
     private String exchangeName;
     private String queueName;
-
 
     public FanoutRabbit(String exchangeName, String queueName) {
         this.exchangeName = exchangeName;

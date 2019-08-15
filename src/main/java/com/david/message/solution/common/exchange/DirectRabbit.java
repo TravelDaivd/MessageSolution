@@ -1,9 +1,8 @@
 package com.david.message.solution.common.exchange;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
+
+import java.util.Map;
 
 /**
  * 交换器和队列默认都是持久化
@@ -14,12 +13,15 @@ public class DirectRabbit  implements RabbitMQExchange {
     private String exchangeName;
     private String queueName;
     private String routingKey;
+    private boolean setDeadQueue;
 
+    public DirectRabbit(){}
 
-    public DirectRabbit(String exchangeName, String queueName, String routingKey) {
+    public DirectRabbit(String exchangeName, String queueName, String routingKey,boolean setDeadQueue) {
         this.exchangeName = exchangeName;
         this.queueName = queueName;
         this.routingKey = routingKey;
+        this.setDeadQueue = setDeadQueue;
     }
 
     @Override
@@ -30,14 +32,23 @@ public class DirectRabbit  implements RabbitMQExchange {
 
     @Override
     public void createQueue(AmqpAdmin amqpAdmin) {
-        Queue queue = new Queue(queueName);
-        amqpAdmin.declareQueue(queue);
+        if(setDeadQueue){
+            DirectRabbit directRabbit = new DirectRabbit();
+            directRabbit.createDeadQueue(amqpAdmin,queueName,exchangeName,routingKey,0);
+        }else{
+            Queue queue = new Queue(queueName);
+            amqpAdmin.declareQueue(queue);
+        }
     }
 
     @Override
     public void bindingExchangeAndQueue(AmqpAdmin amqpAdmin) {
         createExchange(amqpAdmin);
         createQueue(amqpAdmin);
+        if(setDeadQueue){
+            DirectRabbit directRabbit = new DirectRabbit();
+            directRabbit.bindingDeadQueue(amqpAdmin,exchangeName,queueName,routingKey);
+        }
         Binding binding = new Binding(queueName, Binding.DestinationType.QUEUE, exchangeName, routingKey,null);
         amqpAdmin.declareBinding(binding);
     }

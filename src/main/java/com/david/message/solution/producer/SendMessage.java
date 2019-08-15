@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Date;
 
-//@Component
+@Component
 public class SendMessage {
     public final static long SECOND = 1 * 1000;
 
@@ -24,7 +24,7 @@ public class SendMessage {
     @Autowired
     private SendMessageCallBack sendMessageCallBack;
 
-   // @Scheduled(fixedRate = SECOND * 60 * 1, initialDelay = SECOND * 10)
+    @Scheduled(fixedRate = SECOND * 60 * 1, initialDelay = SECOND * 10)
     public void syncMessage (){
         DeviceAlarm deviceAlarm = handleMessage();
         if(deviceAlarm.getOperType()==-1){
@@ -32,7 +32,7 @@ public class SendMessage {
             rabbitServer.setRabbitCallback(sendMessageCallBack);
             SolutionUtil.deviceAlarmConcurrentHashMap.put(deviceAlarm.getId(),deviceAlarm);
             String message = JSON.toJSONString(deviceAlarm);
-            rabbitServer.sendMessageAndCallback(message,"solution_topic","solution_message", deviceAlarm.getId());
+            rabbitServer.sendMessageAndCallback(message,"solution_topic","solution_message", deviceAlarm.getId(),5);
         }
     }
     private DeviceAlarm handleMessage (){
