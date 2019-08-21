@@ -31,6 +31,7 @@ public class ConsumerMessage {
             String data = new String(message.getBody());
            DeviceAlarm deviceAlarm = JSON.parseObject(data,DeviceAlarm.class);
            if(deviceAlarm.getId().equals("QW736FGD")){
+               //TODO 直接加入死信队列
                ConsumeMessage.rejectMessageAndFormDeadQueue(channel,deliveryTag);
            }else if(deviceAlarm.getId().equals("GG536D")){
                logger.info("设备告警ID："+ deviceAlarm.getId());

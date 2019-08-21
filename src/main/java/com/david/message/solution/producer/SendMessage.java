@@ -39,7 +39,7 @@ public class SendMessage implements ProducerMessage<DeviceAlarm> {
             rabbitServer.setRabbitCallback(sendMessageCallBack);
             SolutionUtil.deviceAlarmConcurrentHashMap.put(deviceAlarm.getId(),deviceAlarm);
             String message = JSON.toJSONString(deviceAlarm);
-            rabbitServer.sendMessageAndCallback(message,"solution_topic1","solution_message", deviceAlarm.getId());
+            rabbitServer.sendMessageAndCallback(message,"solution_topic","solution_message", deviceAlarm.getId());
         }
     }
 
