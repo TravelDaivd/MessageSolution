@@ -1,14 +1,14 @@
 package com.david.message.solution.config;
 
-import com.david.message.solution.common.exchange.DirectRabbit;
-import com.david.message.solution.common.exchange.FanoutRabbit;
-import com.david.message.solution.common.exchange.RabbitMQExchange;
-import com.david.message.solution.common.exchange.TopicRabbit;
+import com.david.message.solution.exchange.DirectRabbit;
+import com.david.message.solution.exchange.FanoutRabbit;
+import com.david.message.solution.exchange.RabbitMQExchange;
+import com.david.message.solution.exchange.TopicRabbit;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class RabbitPushConfig {
+public class ExchangeConfig {
 
 
     @Bean("topicRabbitMQ")
@@ -25,4 +25,7 @@ public class RabbitPushConfig {
     public RabbitMQExchange fanoutExchange(){
         return new FanoutRabbit("solution_fanout","solutionFanout");
     }
+
+
+
 }

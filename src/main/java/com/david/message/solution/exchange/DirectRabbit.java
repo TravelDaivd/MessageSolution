@@ -1,8 +1,6 @@
-package com.david.message.solution.common.exchange;
+package com.david.message.solution.exchange;
 
 import org.springframework.amqp.core.*;
-
-import java.util.Map;
 
 /**
  * 交换器和队列默认都是持久化
@@ -34,6 +32,7 @@ public class DirectRabbit  implements RabbitMQExchange {
     public void createQueue(AmqpAdmin amqpAdmin) {
         if(setDeadQueue){
             DirectRabbit directRabbit = new DirectRabbit();
+            directRabbit.deleteNotDeadQueue(amqpAdmin,queueName);
             directRabbit.createDeadQueue(amqpAdmin,queueName,exchangeName,routingKey,0);
         }else{
             Queue queue = new Queue(queueName);

@@ -5,7 +5,7 @@ import java.util.Date;
 public class DeviceAlarm {
     private String id;
     private String message;
-    private int operType;
+    private String operationType;
     private Date createTime;
     private Date updateTime;
 
@@ -25,12 +25,12 @@ public class DeviceAlarm {
         this.message = message;
     }
 
-    public int getOperType() {
-        return operType;
+    public String getOperationType() {
+        return operationType;
     }
 
-    public void setOperType(int operType) {
-        this.operType = operType;
+    public void setOperationType(String operationType) {
+        this.operationType = operationType;
     }
 
     public Date getCreateTime() {

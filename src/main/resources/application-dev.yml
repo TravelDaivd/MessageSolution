@@ -9,6 +9,11 @@ spring:
     listener:
       simple:
         acknowledge-mode: manual  #开启ACK
+        default-requeue-rejected: false #被拒绝的消息进入到死信队列
+        retry:
+          enabled: true #开启消息消费失败重试
+          max-attempts: 5 #消息消费失败后最多重复消息5次
+          initial-interval: 2000 #间隔1秒时间重新消费失败消息
   datasource:
     url: jdbc:mysql://172.162.15.113:3306/david?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: db_user

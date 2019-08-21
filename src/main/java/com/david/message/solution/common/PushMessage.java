@@ -35,6 +35,14 @@ public interface PushMessage extends RabbitTemplate.ReturnCallback,RabbitTemplat
      * @param IGenId   这里设置的ID可以是业务数据ID也可以是随机UUID
      */
     void sendMessageAndCallback(Object message,String exchangeName,String routingKey, String IGenId);
+
+    /**
+     * 普通方式发送消息，没有ack 担有消息过期时间
+     * @param message   消息
+     * @param queueName  队列
+     * @param second  过期时间 (秒)
+     */
+    void ordinarySendMessage(Object message,String queueName,int second);
     /**
      * 根据队列，发送消息
      * 支持确认机制ACK、消息过期时间和发送失败回退机制
@@ -54,11 +62,5 @@ public interface PushMessage extends RabbitTemplate.ReturnCallback,RabbitTemplat
      * @param second  过期时间 (秒)
      */
     void sendMessageAndCallback(Object message,String exchangeName,String routingKey, String IGenId,int second);
-    /**
-     * 普通方式发送消息，没有ack
-     * @param message   消息
-     * @param queueName  队列
-     * @param second  过期时间 (秒)
-     */
-    void ordinarySendMessage(Object message,String queueName,int second);
+
 }

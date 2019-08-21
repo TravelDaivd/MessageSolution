@@ -1,6 +1,6 @@
 package com.david.message.solution.common;
 
-import com.david.message.solution.common.exchange.RabbitMQExchange;
+import com.david.message.solution.exchange.RabbitMQExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpAdmin;

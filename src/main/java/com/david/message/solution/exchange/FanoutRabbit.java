@@ -1,8 +1,6 @@
-package com.david.message.solution.common.exchange;
+package com.david.message.solution.exchange;
 
 import org.springframework.amqp.core.*;
-
-import java.util.Map;
 
 
 public class FanoutRabbit  implements RabbitMQExchange {

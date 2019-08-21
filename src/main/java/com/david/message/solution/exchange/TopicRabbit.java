@@ -1,6 +1,7 @@
-package com.david.message.solution.common.exchange;
+package com.david.message.solution.exchange;
 
 import org.springframework.amqp.core.*;
+
 
 public class TopicRabbit implements RabbitMQExchange {
     private String exchangeName;
@@ -27,6 +28,7 @@ public class TopicRabbit implements RabbitMQExchange {
     public void createQueue(AmqpAdmin amqpAdmin) {
         if(setDeadQueue){
             TopicRabbit topicRabbit = new TopicRabbit();
+            topicRabbit.deleteNotDeadQueue(amqpAdmin,queueName);
             topicRabbit.createDeadQueue(amqpAdmin,queueName,exchangeName,routingKey,0);
         }else{
             Queue queue  = new Queue(queueName);
