@@ -1,10 +1,11 @@
-package com.david.message.solution.common;
+package com.david.message.rabbit.common;
 
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 /**
  * 定义发送消息： 返回回调，ack机制回调，操作回调
+ * @author gulei
  */
 
 public interface PushMessage extends RabbitTemplate.ReturnCallback,RabbitTemplate.ConfirmCallback{
@@ -37,7 +38,7 @@ public interface PushMessage extends RabbitTemplate.ReturnCallback,RabbitTemplat
     void sendMessageAndCallback(Object message,String exchangeName,String routingKey, String IGenId);
 
     /**
-     * 普通方式发送消息，没有ack 担有消息过期时间
+     * 普通方式发送消息，没有ack 但有消息过期时间
      * @param message   消息
      * @param queueName  队列
      * @param second  过期时间 (秒)

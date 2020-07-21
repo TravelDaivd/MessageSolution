@@ -1,10 +1,11 @@
-package com.david.message.solution.common;
+package com.david.message.rabbit.common;
 
 import org.springframework.amqp.core.Message;
 
 /**
  * 通用回调接口
  * 实现此接口定制自己的发送消息回调
+ * @author gulei
  */
 public interface RabbitCallback {
 

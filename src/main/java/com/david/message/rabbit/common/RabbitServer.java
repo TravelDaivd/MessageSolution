@@ -1,4 +1,4 @@
-package com.david.message.solution.common;
+package com.david.message.rabbit.common;
 
 import com.david.message.solution.exchange.RabbitMQExchange;
 import org.slf4j.Logger;
@@ -13,6 +13,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author gulei
+ */
 @Component
 public class RabbitServer implements PushMessage, InitializingBean {
 

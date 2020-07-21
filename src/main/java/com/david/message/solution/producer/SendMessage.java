@@ -1,17 +1,16 @@
 package com.david.message.solution.producer;
 
 import com.alibaba.fastjson.JSON;
-import com.david.message.solution.callBack.SendMessageCallBack;
-import com.david.message.solution.common.MessageStatus;
-import com.david.message.solution.common.ProducerMessage;
-import com.david.message.solution.common.RabbitServer;
-import com.david.message.solution.common.SolutionUtil;
+import com.david.message.rabbit.callback.SendMessageCallBack;
+import com.david.message.rabbit.common.MessageStatus;
+import com.david.message.rabbit.common.ProducerMessage;
+import com.david.message.rabbit.common.RabbitServer;
+import com.david.message.util.SolutionUtil;
 import com.david.message.solution.exchange.RabbitMQExchange;
-import com.david.message.solution.domian.DeviceAlarm;
-import com.david.message.solution.domian.DeviceInfo;
+import com.david.message.solution.item.module.DeviceAlarm;
+import com.david.message.solution.item.module.DeviceInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.Date;
 
@@ -26,7 +25,7 @@ public class SendMessage implements ProducerMessage<DeviceAlarm> {
     @Autowired
     private SendMessageCallBack sendMessageCallBack;
 
-    @Scheduled(fixedRate = SECOND * 60 * 1, initialDelay = SECOND * 5)
+   // @Scheduled(fixedRate = SECOND * 60 * 1, initialDelay = SECOND * 5)
     public void syncMessage (){
         DeviceAlarm deviceAlarm = handleMessage();
         sendMessage(deviceAlarm);

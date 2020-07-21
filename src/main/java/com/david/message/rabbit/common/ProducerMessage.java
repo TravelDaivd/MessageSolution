@@ -1,5 +1,8 @@
-package com.david.message.solution.common;
+package com.david.message.rabbit.common;
 
+/**
+ * @author gulei
+ */
 public interface ProducerMessage<T> {
 
     /**

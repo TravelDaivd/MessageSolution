@@ -1,6 +1,11 @@
-package com.david.message.solution.domian;
+package com.david.message.solution.item.module;
 
-public class DeviceInfo {
+import java.io.Serializable;
+
+/**
+ * @author gulei
+ */
+public class DeviceInfo implements Serializable {
     private String name;
     private String status;
     private int degrees;

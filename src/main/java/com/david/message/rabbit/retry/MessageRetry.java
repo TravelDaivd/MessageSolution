@@ -1,6 +1,6 @@
-package com.david.message.solution.retry;
+package com.david.message.rabbit.retry;
 
-import com.david.message.solution.common.ProducerMessage;
+import com.david.message.rabbit.common.ProducerMessage;
 import com.rabbitmq.client.Channel;
 
 public interface MessageRetry {

@@ -1,7 +1,10 @@
-package com.david.message.solution.domian;
+package com.david.message.solution.item.module;
 
 import java.util.Date;
 
+/**
+ * @author gulei
+ */
 public class DeviceAlarm {
     private String id;
     private String message;

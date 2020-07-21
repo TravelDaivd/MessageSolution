@@ -1,10 +1,12 @@
-package com.david.message.solution.retry;
+package com.david.message.rabbit.retry;
 
-import com.alibaba.fastjson.JSON;
-import com.david.message.solution.common.MessageStatus;
-import com.david.message.solution.common.ProducerMessage;
-import com.david.message.solution.common.SolutionUtil;
-import com.david.message.solution.domian.DeviceAlarm;
+import com.david.message.rabbit.common.MessageStatus;
+import com.david.message.rabbit.common.ProducerMessage;
+import com.david.message.util.SolutionUtil;
+import com.david.message.solution.item.module.DeviceAlarm;
+import com.google.gson.Gson;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import java.io.IOException;
 
 /**
  * 根据不同的业务，重写这个实现 MessageRetry
+ * @author gulei
  */
 @Component
 public class AbstractMessageRetry implements MessageRetry {
@@ -53,7 +56,8 @@ public class AbstractMessageRetry implements MessageRetry {
             logger.info("重试消费次数："+count);
             if(count == retryCount){
                 // TODO:  业务上面的处理
-                DeviceAlarm deviceAlarm = JSON.parseObject(message,DeviceAlarm.class);
+                Gson gson = new Gson();
+                DeviceAlarm deviceAlarm = gson.fromJson(message,DeviceAlarm.class);;
                 deviceAlarm.setOperationType(MessageStatus.getValue(201).getStatus());
                 if(SolutionUtil.deviceAlarmConcurrentHashMap.containsKey(deviceAlarm.getId())){
                     SolutionUtil.deviceAlarmConcurrentHashMap.put(deviceAlarm.getId(),deviceAlarm);

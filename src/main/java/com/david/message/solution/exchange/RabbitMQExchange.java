@@ -1,7 +1,7 @@
 package com.david.message.solution.exchange;
 
 
-import com.david.message.solution.common.SolutionUtil;
+import com.david.message.util.SolutionUtil;
 import org.springframework.amqp.core.*;
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public interface RabbitMQExchange {
      */
     default void createDeadQueue(AmqpAdmin amqpAdmin,String queueName,String exchangeName,
                                                String redirectRoutingKey,int expirationTime){
-        Map<String,Object> paramMap = new HashMap<>();
+        Map<String,Object> paramMap = new HashMap<>(2);
         paramMap.put("x-dead-letter-exchange",exchangeName);
         paramMap.put("x-dead-letter-routing-key", SolutionUtil.DEAD_QUEUE_NAME +redirectRoutingKey);
         if(expirationTime > 0){
@@ -39,6 +39,7 @@ public interface RabbitMQExchange {
         amqpAdmin.declareQueue(queue);
         amqpAdmin.declareQueue(redirectQueue);
     }
+
 
     /**
      * 绑定死信队列

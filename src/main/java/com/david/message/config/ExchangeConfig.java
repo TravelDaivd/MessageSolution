@@ -1,4 +1,4 @@
-package com.david.message.solution.config;
+package com.david.message.config;
 
 import com.david.message.solution.exchange.DirectRabbit;
 import com.david.message.solution.exchange.FanoutRabbit;

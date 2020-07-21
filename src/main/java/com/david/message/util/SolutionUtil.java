@@ -1,9 +1,12 @@
-package com.david.message.solution.common;
+package com.david.message.util;
 
-import com.david.message.solution.domian.DeviceAlarm;
+import com.david.message.solution.item.module.DeviceAlarm;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author gulei
+ */
 public class SolutionUtil {
     public static final String DEAD_QUEUE_NAME = "redirect_";
 

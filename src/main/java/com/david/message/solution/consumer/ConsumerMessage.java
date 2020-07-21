@@ -1,14 +1,13 @@
 package com.david.message.solution.consumer;
 
-import com.alibaba.fastjson.JSON;
-import com.david.message.solution.retry.AbstractMessageRetry;
-import com.david.message.solution.common.ConsumeMessage;
-import com.david.message.solution.domian.DeviceAlarm;
+import com.david.message.rabbit.retry.AbstractMessageRetry;
+import com.david.message.rabbit.common.ConsumeMessage;
+import com.david.message.solution.item.module.DeviceAlarm;
+import com.google.gson.Gson;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +15,7 @@ import java.text.MessageFormat;
 
 /**
  * 消息消费者 手动确认
+ * @author gulei
  */
 @Component
 public class ConsumerMessage {
@@ -24,12 +24,13 @@ public class ConsumerMessage {
     @Autowired
     private AbstractMessageRetry consumerMessageRetry;
 
-    @RabbitListener(queues = "solutionTopic")
+   // @RabbitListener(queues = "solutionTopic")
     public void receiveMessage(Channel channel, Message message) {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
         try {
             String data = new String(message.getBody());
-           DeviceAlarm deviceAlarm = JSON.parseObject(data,DeviceAlarm.class);
+            Gson gson = new Gson();
+           DeviceAlarm deviceAlarm = gson.fromJson(data,DeviceAlarm.class);
            if(deviceAlarm.getId().equals("QW736FGD")){
                //TODO 直接加入死信队列
                ConsumeMessage.rejectMessageAndFormDeadQueue(channel,deliveryTag);
@@ -44,11 +45,12 @@ public class ConsumerMessage {
            }
        }catch (Exception e){
          logger.error(MessageFormat.format("消费消息出现错误：{0}",message.getMessageProperties().getRedelivered()));
-         if(message.getMessageProperties().getRedelivered()){ //触发条件：rabbitmq停止运行
-             System.out.println("消息已重复处理失败,拒绝再次接收！");
+            //触发条件：rabbitmq停止运行
+         if(message.getMessageProperties().getRedelivered()){
+             logger.error(MessageFormat.format("消息已重复处理失败,拒绝再次接收！标签是：{0}",deliveryTag));
              ConsumeMessage.rejectMessageAndFormDeadQueue(channel,deliveryTag);
            }else{
-             System.out.println("消息即将再次返回队列处理！");
+             logger.error(MessageFormat.format("消息即将再次返回队列处理！标签是：{0}",deliveryTag));
              ConsumeMessage.nackOneMessageAgainConsume(channel,deliveryTag);
          }
 

@@ -1,20 +1,21 @@
-package com.david.message.solution.callBack;
+package com.david.message.rabbit.callback;
 
-import com.david.message.solution.common.*;
-import com.david.message.solution.domian.DeviceAlarm;
-import com.david.message.solution.retry.MessageRetry;
+import com.david.message.rabbit.common.*;
+import com.david.message.solution.item.module.DeviceAlarm;
+import com.david.message.rabbit.retry.AbstractMessageRetry;
+import com.david.message.rabbit.retry.MessageRetry;
+import com.david.message.util.SolutionUtil;
 import org.springframework.amqp.core.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * @author gulei
+ */
 @Component
 public class SendMessageCallBack implements RabbitCallback {
-
     @Autowired
     private ProducerMessage sendMessage;
-
-    @Autowired
-    private MessageRetry abstractMessageRetry;
 
     @Override
     public void messageSendSuccess(String id) {
@@ -25,6 +26,7 @@ public class SendMessageCallBack implements RabbitCallback {
 
     @Override
     public void messageSendFail(String id) {
+        MessageRetry abstractMessageRetry = new AbstractMessageRetry();
         abstractMessageRetry.retryPushAfterOtherThing(sendMessage,id,10);
     }
 

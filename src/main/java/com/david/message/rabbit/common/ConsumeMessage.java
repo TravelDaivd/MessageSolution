@@ -1,4 +1,4 @@
-package com.david.message.solution.common;
+package com.david.message.rabbit.common;
 
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 处理消费消息
+ * @author gulei
  */
 public class ConsumeMessage {
     private static Logger logger = LoggerFactory.getLogger(ConsumeMessage.class);
