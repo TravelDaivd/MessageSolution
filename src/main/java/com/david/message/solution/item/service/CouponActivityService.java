@@ -9,7 +9,6 @@ import com.david.message.solution.item.reqparam.CouponActivityReq;
 import com.david.message.solution.item.reqparam.ReceiverUserReq;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import io.lettuce.core.SetArgs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +28,16 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 public class CouponActivityService {
-
-    @Autowired
-    private CouponActivityMapper couponActivityMapper;
-
-    @Autowired
-    private CouponMapper couponMapper;
-
-    @Autowired
-    private CouponReceiverMapper couponReceiverMapper;
-
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
+    private CouponActivityMapper couponActivityMapper;
+    @Autowired
+    private CouponMapper couponMapper;
+    @Autowired
+    private CouponReceiverMapper couponReceiverMapper;
+    @Autowired
     private RedisTemplate<String,String> redisTemplate;
-
 
     @Transactional(rollbackFor=Exception.class)
     public Long addActivityInfo (CouponActivityReq couponActivityReq){
@@ -77,18 +71,19 @@ public class CouponActivityService {
         String key = "activity_"+activityId;
         ;
         try {
+
             String redisValue = redisTemplate.opsForValue().get(key);
             if(StringUtils.isEmpty(redisValue)){
                 Coupon coupon = new Coupon();
                 coupon.setActivityId(activityId);
                 List<Coupon> coupons = couponMapper.select(coupon);
                 Gson gson = new Gson();
-                redisValue = gson.toJson(coupon);
-                Boolean bool = redisTemplate.opsForValue().setIfAbsent(key, redisValue);
+                redisValue = gson.toJson(coupons);
+                Boolean bool = redisTemplate.opsForValue().setIfAbsent(key, redisValue,1,TimeUnit.HOURS);
                 if(bool){
-                    logger.info(String.format("把当前活动下的优惠券保存到redis成功？活动ID:%s;优惠券信息：%s",activityId,redisValue));
+                    logger.info(String.format("把当前活动下的优惠券保存到redis成功 活动ID:%s;优惠券信息：%s",activityId,redisValue));
                 }else{
-                    logger.error(String.format("把当前活动下的优惠券保存到redis失败？活动ID:%s",activityId));
+                    logger.error(String.format("把当前活动下的优惠券保存到redis失败 活动ID:%s",activityId));
                 }
                 return coupons;
             }else{
@@ -129,9 +124,6 @@ public class CouponActivityService {
     public  void  receiveCoupon(ReceiverUserReq receiverUserReq){
         boolean bool = false;
         try{
-            SetArgs setArgs = new SetArgs();
-            setArgs.nx();     //仅在键不存在时设置键。
-            setArgs.ex(2);
             Boolean aBoolean = redisTemplate.opsForValue().setIfAbsent("receive_lock", receiverUserReq.getUserPhone(), 2, TimeUnit.SECONDS);
             if(!aBoolean){
                 bool = true;

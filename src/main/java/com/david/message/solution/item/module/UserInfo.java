@@ -1,4 +1,4 @@
-package com.david.message.solution.item.web;
+package com.david.message.solution.item.module;
 
 import lombok.Data;
 

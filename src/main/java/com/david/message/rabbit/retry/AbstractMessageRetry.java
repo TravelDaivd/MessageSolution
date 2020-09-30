@@ -5,8 +5,6 @@ import com.david.message.rabbit.common.ProducerMessage;
 import com.david.message.util.SolutionUtil;
 import com.david.message.solution.item.module.DeviceAlarm;
 import com.google.gson.Gson;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 import com.rabbitmq.client.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

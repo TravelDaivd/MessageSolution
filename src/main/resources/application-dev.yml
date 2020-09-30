@@ -37,13 +37,17 @@ spring:
     useGlobalDataSourceStat: true
     logSlowSql: true
   redis:
-    host: 172.162.15.113
-    password: redis
+   # host: 127.0.0.1
+   # password: redis
+   # port: 6379
     timeout: 1000
-    port: 6379
+
     lettuce:
       pool:
         max-active: 20
         max-wait: 5000
         max-idle: 15
         min-idle: 5
+    sentinel:
+      master: mymaster
+      nodes: 127.0.0.1:56379,127.0.0.1:56380,127.0.0.1:56381

@@ -1,6 +1,5 @@
 package com.david.message.solution.producer;
 
-import com.alibaba.fastjson.JSON;
 import com.david.message.rabbit.callback.SendMessageCallBack;
 import com.david.message.rabbit.common.MessageStatus;
 import com.david.message.rabbit.common.ProducerMessage;
@@ -9,6 +8,7 @@ import com.david.message.util.SolutionUtil;
 import com.david.message.solution.exchange.RabbitMQExchange;
 import com.david.message.solution.item.module.DeviceAlarm;
 import com.david.message.solution.item.module.DeviceInfo;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +37,8 @@ public class SendMessage implements ProducerMessage<DeviceAlarm> {
             rabbitServer.setRabbitExchangeQueue(topicRabbitMQ);
             rabbitServer.setRabbitCallback(sendMessageCallBack);
             SolutionUtil.deviceAlarmConcurrentHashMap.put(deviceAlarm.getId(),deviceAlarm);
-            String message = JSON.toJSONString(deviceAlarm);
+            Gson gson = new Gson();
+            String message = gson.toJson(deviceAlarm);
             rabbitServer.sendMessageAndCallback(message,"solution_topic","solution_message", deviceAlarm.getId());
         }
     }
@@ -54,7 +55,8 @@ public class SendMessage implements ProducerMessage<DeviceAlarm> {
         deviceInfo.setName("路灯照明设备");
         deviceInfo.setStatus("告警");
         deviceInfo.setDegrees(0);
-        String deviceInfoMessage = JSON.toJSONString(deviceInfo);
+        Gson gson = new Gson();
+        String deviceInfoMessage = gson.toJson(deviceInfo);
         DeviceAlarm deviceAlarm = new DeviceAlarm();
         deviceAlarm.setId(array[2]);
         deviceAlarm.setMessage(deviceInfoMessage);

@@ -14,9 +14,8 @@ public class RedisCommon {
 
     public static RedisClient getRedisClient(){
         RedisURI redisURI = new RedisURI();
-        redisURI.setHost("172.162.15.113");
+        redisURI.setHost("127.0.0.1");
         redisURI.setPort(6379);
-        redisURI.setPassword("redis");
         redisURI.setTimeout(Duration.ofSeconds(100));
         return RedisClient.create(redisURI);
     }

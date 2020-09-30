@@ -3,6 +3,9 @@ package com.david.message.rabbit.retry;
 import com.david.message.rabbit.common.ProducerMessage;
 import com.rabbitmq.client.Channel;
 
+/**
+ * @author gulei
+ */
 public interface MessageRetry {
 
     /**

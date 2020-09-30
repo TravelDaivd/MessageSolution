@@ -1,6 +1,7 @@
 package com.david.message.solution.item.web;
 
-import com.alibaba.fastjson.JSON;
+import com.david.message.solution.item.module.UserInfo;
+import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,9 @@ public class AsyncController {
 
     @PostMapping("/add/user")
     public String addUser(@RequestBody UserInfo userInfo){
-        logger.info(String.format("input data is %s", JSON.toJSONString(userInfo)));
+
+        Gson gson = new Gson();
+        logger.info(String.format("input data is %s", gson.toJson(userInfo)));
         ExecutorService exs = Executors.newFixedThreadPool(4);
         AtomicReference<String> message = new AtomicReference<>("");
         CompletableFuture.supplyAsync(()->{
